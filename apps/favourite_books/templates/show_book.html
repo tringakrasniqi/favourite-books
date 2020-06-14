@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Login/Registration</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+      <div class="container">
+            <div class="row">
+                  <div class="col s6">
+                  {% if edit_mode == False %}
+                        <h1>{{book_details.title}}</h1>
+                        <p><small>Added on: {{book_details.created_at}}</small></p>
+                        <p><small>Last updated on: {{book_details.updated_at}}</small></p>
+                        <p>Added by: {{book_details.uploaded_by.first_name}} {{book_details.uploaded_by.last_name}}</p>
+                        <p>{{book_details.desc}}</p>
+                 
+                  {% else %}
+                        <form action="/books/{{book_details.id}}/edit" method="POST">
+                              {% csrf_token %}
+                              <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="{{book_details.title}}" >
+                              </div>
+                              <p><small>Added on: {{book_details.created_at}}</small></p>
+                              <p><small>Last updated on: {{book_details.updated_at}}</small></p>
+                              <p>Added by: {{book_details.uploaded_by.first_name}} {{book_details.uploaded_by.last_name}}</p>
+                              <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" id="description" rows="3" name="description">{{book_details.desc}}</textarea>
+                              </div>
+                              <button type="submit" class="btn btn-info">UPDATE</button>
+                              <a href="/books/{{book_details.id}}/delete" class="btn btn-danger">DELETE</a>
+                        </form>
+                  {% endif %}
+                  </div>
+                  <div class="col s6">
+                        <h1>Users who like this:</h1>
+                        <ul>
+                        {% for user in book_details.users_who_favourite.all %}
+                              <li>
+                              {{user.first_name}} {{user.last_name}}
+                              </li>
+                        {% endfor %}
+                        </ul>
+                  </div>
+            </div>
+      </div>
+</book>
+</html>

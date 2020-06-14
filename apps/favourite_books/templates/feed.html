@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Login/Registration</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">FavBooks</a>
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <form action="/logout" method="POST" class="form-inline my-2 my-lg-0">
+                  {% csrf_token %}
+                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+            </form>
+            </div>
+      </nav>
+      <div class="container">
+            <div class="row">
+                  <div class="col s6">
+                        <h3>Add your favourite book</h3>
+                        {% if messages %}
+                              <ul class="messages">    
+                              {% for message in messages %}    
+                                    <li class="text-danger">{{ message }}</li>    
+                              {% endfor %}
+                              </ul>
+                        {% endif %} 
+                        <form action="/books/add" method="POST">
+                              {% csrf_token %}
+                              <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" >
+                              </div>
+                              <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" id="description" rows="3" name="description"></textarea>
+                              </div>
+                              <button type="submit" class="btn btn-info">ADD</button>
+                        </form>
+                  </div>
+                  <div class="col s6">
+                        <h3>All Books</h3>
+                        <ul>
+                        {% for book in all_books %}
+                              <li>
+                                    <p><a href="/books/show_one/{{book.id}}">{{book.title}}</a></p>
+                                    <p>(added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}})</p>
+                              </li>
+                        {% endfor %}
+                        </ul>
+                  </div>
+            </div>
+      </div>
+</body>
+</html>
