@@ -45,6 +45,13 @@
                               </li>
                         {% endfor %}
                         </ul>
+                              <a class="btn btn-info" href="/books/{{book_details.id}}/favourite">
+                                    {% if logged_user in book_details.users_who_favourite.all %}
+                                          Unfavourite
+                                    {% else %}
+                                          Favourite 
+                                    {% endif %}
+                              </a>
                   </div>
             </div>
       </div>

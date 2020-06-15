@@ -6,7 +6,8 @@ from apps.authenticate.models import User
 def feed(request):
       if 'uid' in request.session:
             context = {
-                  'all_books': Book.objects.all()
+                  'all_books': Book.objects.all(),
+                  'logged_user': User.objects.get(id=request.session['uid'])
             }
             return render(request, 'feed.html', context)
       else:
@@ -32,7 +33,8 @@ def show_one(request, book_id):
             edit_mode = True
       context = {
             'book_details' : book,
-            'edit_mode' : edit_mode
+            'edit_mode' : edit_mode,
+            'logged_user': User.objects.get(id=request.session['uid'])
       }
       return render(request, 'show_book.html', context)
 
@@ -45,4 +47,13 @@ def edit_book(request, book_id):
 
 def delete_book(request, book_id):
       Book.objects.get(id=book_id).delete()
+      return redirect('/books')
+
+def toggle_favourite(request, book_id):
+      book = Book.objects.get(id=book_id)
+      logged_user = User.objects.get(id=request.session['uid'])
+      if book in logged_user.favourited_books.all():
+            logged_user.favourited_books.remove(book)
+      else:
+            logged_user.favourited_books.add(book)
       return redirect('/books')

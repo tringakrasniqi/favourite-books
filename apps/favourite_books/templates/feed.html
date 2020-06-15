@@ -8,7 +8,7 @@
 </head>
 <body>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">FavBooks</a>
+            <a class="navbar-brand">FavBooks</a>
             <ul class="navbar-nav mr-auto">
             </ul>
             <form action="/logout" method="POST" class="form-inline my-2 my-lg-0">
@@ -48,6 +48,13 @@
                               <li>
                                     <p><a href="/books/show_one/{{book.id}}">{{book.title}}</a></p>
                                     <p>(added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}})</p>
+                                          <a class="btn btn-info" href="/books/{{book.id}}/favourite">
+                                                {% if logged_user in book.users_who_favourite.all %}
+                                                      Unfavourite
+                                                {% else %}
+                                                      Favourite 
+                                                {% endif %}
+                                           </a>
                               </li>
                         {% endfor %}
                         </ul>
